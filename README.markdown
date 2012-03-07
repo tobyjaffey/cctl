@@ -87,7 +87,7 @@ Read a 1KB page from flash. Sends 1024 raw bytes. On completion, '\0' is sent
 
 -> `r`, `uint8_t page` (0-31)
 
-<- uint8_t data[1024], `\0`
+<- `uint8_t data[1024]`, `\0`
 
 ## Load page
 
