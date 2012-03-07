@@ -12,6 +12,7 @@ Authors
 -------
 
 Joby Taffey (c) 2012 <jrt-cctl@hodgepig.org>
+
 Portions originally from CC Bootloader, Fergus Noble (c) 2011
 
 Usage
@@ -77,6 +78,7 @@ Jumps to user code. On failure, the device will reset.
 Erase a 1KB page of flash. On completion, `\0` is sent
 
 -> `e`, `uint8_t page` (0-31)
+
 <- `\0`
 
 ## Read page
@@ -84,6 +86,7 @@ Erase a 1KB page of flash. On completion, `\0` is sent
 Read a 1KB page from flash. Sends 1024 raw bytes. On completion, '\0' is sent
 
 -> `r`, `uint8_t page` (0-31)
+
 <- uint8_t data[1024], `\0`
 
 ## Load page
@@ -91,6 +94,7 @@ Read a 1KB page from flash. Sends 1024 raw bytes. On completion, '\0' is sent
 Loads 1KB page from serial into a RAM buffer. Receives 1024 raw bytes. On completion, '\0' is sent
 
 -> `l`, `uint8_t data[1024`
+
 <- `\0`
 
 ## Program page
@@ -98,6 +102,7 @@ Loads 1KB page from serial into a RAM buffer. Receives 1024 raw bytes. On comple
 Program a 1KB page of flash from RAM buffer. On completion, `\0` is sent
 
 -> `p`, `uint8_t page` (0-31)
+
 <- `\0`
 
 
