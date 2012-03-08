@@ -102,7 +102,7 @@ Read a 1KB page from flash. Sends 1024 raw bytes. On completion, '\0' is sent
 
 Loads 1KB page from serial into a RAM buffer. Receives 1024 raw bytes. On completion, '\0' is sent
 
--> `l`, `uint8_t data[1024`
+-> `l`, `uint8_t data[1024]`
 
 <- `\0`
 
