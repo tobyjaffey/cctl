@@ -1,3 +1,5 @@
+# Makefile for Linux and OSX/Darwin
+
 CFLAGS=-Wall
 TARGET=cctl-prog
 

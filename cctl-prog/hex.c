@@ -6,13 +6,18 @@
 #include <stdint.h>
 #include <string.h>
 #include <stdlib.h>
+
+#ifndef WIN32
 #include <arpa/inet.h>
+#else
+#include "byteswap.h"
+#endif
 
 static uint8_t tolowercase(uint8_t ch)
 {
     if ((ch >= 'A') && (ch <= 'Z'))
         return ch + 0x20;       // Convert uppercase to lowercase
-    return ch;      // Simply return original character if it doesn't require any adjustments
+    return ch;
 }
 
 static int8_t parseHexDigit(uint8_t digit)
@@ -39,7 +44,7 @@ static int hexstring_parse(const char *hexstr, uint8_t *buf, size_t *buflen)
 
     if (*buflen < hexstrlen/2)
     {
-        fprintf(stderr, "hexstring_parse: buffer too small %d < %d\n", *buflen, hexstrlen/2);
+        fprintf(stderr, "hexstring_parse: buffer too small %zu < %zu\n", *buflen, hexstrlen/2);
         return 1;
     }
 

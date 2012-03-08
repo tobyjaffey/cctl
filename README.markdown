@@ -5,7 +5,7 @@ CCTL is a serial bootloader for the Chipcon CC1110/CC1111 using only one 1KB pag
 It allows update of the the microcontroller firmware over its serial port.
 
 The bootloader consists of two components, a piece of firmware that is flashed
-onto the device and a C utility for downloading code and manipulating the
+onto the device and a utility for downloading code and manipulating the
 flash memory.
 
 Authors
@@ -25,12 +25,21 @@ Once the device is flashed with this firmware it will identify itself over the s
 The microcontroller is configured for 115200, 8N1 transmitting on P0.3, receiving on P0.2.
 Note that the CC111x is not 5v tolerant, so be sure to use a 3v serial adapter.
 
-
 You can now use cctl-prog to download your payload code.
+A prebuilt version of cctl-prog.exe is provided for Windows. For Linux or OSX, type "make".
 
 For usage instructions, run cctl-prog with no arguments:
 
 `./cctl-prog`
+
+    ChipCon Tiny Loader Programmer
+    cctl-prog -d /dev/ttyXYZ [-c] [-f file.hex]
+    --help           -h          This help
+    --console        -c          Connect console to serial port on device
+    --flash=file.hex -f file.hex Reflash device with intel hex file
+    --timeout=n      -t n        Search for bootload string for n seconds
+
+If both `--console` and `--flash` are specified, then the device will be reflashed first, then the console will connect.
 
 Preparing your user code for usage with the bootloader is very simple. All you
 need to do is set your linker to start the code section at 0x400. For an

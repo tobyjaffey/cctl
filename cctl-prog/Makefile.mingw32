@@ -1,0 +1,12 @@
+# Makefile for Win32, using MingW32 GCC toolchain
+
+CROSS_COMPILE=/usr/bin/i586-mingw32msvc-
+CFLAGS=-Wall
+TARGET=cctl-prog
+
+all:
+	$(CROSS_COMPILE)gcc -o $(TARGET).exe $(CFLAGS) $(TARGET).c hex.c
+
+clean:
+	rm -f $(TARGET).exe
+
