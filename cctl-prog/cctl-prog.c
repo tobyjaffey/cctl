@@ -223,37 +223,6 @@ int serialOpen(char *port)
 }
 
 #ifdef WIN32
-int __stdcall serialSelect(int nfds, fd_set* readfds, fd_set* writefds, fd_set* exceptfs, const struct timeval* timeout)
-{
-    time_t maxtc = time(0) + (timeout->tv_sec);
-    COMSTAT cs = {0};
-
-    if (readfds->fd_count != 1 )
-    {
-        fprintf(stderr, "Too many fds\n");
-        return -1;
-    }
-
-    while( time(0) <= maxtc )
-    { //only one file supported
-        if (ClearCommError( (HANDLE)readfds->fd_array[0], 0, &cs) != TRUE )
-        {
-            fprintf(stderr, "comm error\n");
-            return -1;
-        }
-
-        if (cs.cbInQue > 0 )
-        {
-            return 1;
-        }
-
-        Sleep(10);
-    }
-    return 0;
-}
-#endif
-
-#ifdef WIN32
 int serialRead(int fd, void* buf, int len)
 {
     HANDLE hCom = (HANDLE)fd;
