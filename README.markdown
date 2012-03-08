@@ -6,7 +6,7 @@ It allows update of the the microcontroller firmware over its serial port.
 
 The bootloader consists of two components, a piece of firmware that is flashed
 onto the device and a utility for downloading code and manipulating the
-flash memory.
+flash memory. The client program, `cctl-prog` runs on Linux, OSX/Darwin and Windows.
 
 Authors
 -------
