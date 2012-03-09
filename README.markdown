@@ -41,6 +41,9 @@ For usage instructions, run cctl-prog with no arguments:
 
 If both `--console` and `--flash` are specified, then the device will be reflashed first, then the console will connect.
 
+Before flashing, `cctl-prog` sends the string "+++", which firmware can detect
+and reset automatically.
+
 Preparing your user code for usage with the bootloader is very simple. All you
 need to do is set your linker to start the code section at 0x400. For an
 example of this see the `Makefile` file in the `example_payload` subdirectory.

@@ -250,6 +250,7 @@ int serialRead(int fd, void* buf, int len)
             return rc;
         if (rc > 0)
             return rc;
+        gettimeofday(&now, NULL);
     }
     while((now.tv_sec - start.tv_sec) < SERIAL_TIMEOUT);
 
@@ -285,6 +286,7 @@ int serialWrite(int fd, void* buf, int len)
             return rc;
         if (rc > 0)
             return rc;
+        gettimeofday(&now, NULL);
     }
     while((now.tv_sec - start.tv_sec) < SERIAL_TIMEOUT);
 
@@ -449,13 +451,24 @@ int wait_for_bootloader(int fd, int timeout)
     uint8_t prev_c = 0;
     struct timeval start, now;
     int rc;
+    int last_sec = -1;
 
     gettimeofday(&start, NULL);
+
+    serialWrite(fd, "+++", 3);
 
     printf("Waiting %ds for bootloader, reset board now\n", timeout);
 
     do
     {
+        gettimeofday(&now, NULL);
+        if (((now.tv_sec - start.tv_sec)) != last_sec)
+        {
+            printf(".");
+            fflush(stdout);
+            last_sec = (now.tv_sec - start.tv_sec);
+        }
+
         if ((rc = serialRead(fd, &c, 1)) < 0)
         {
             fprintf(stderr, "read failed\n");
@@ -468,7 +481,6 @@ int wait_for_bootloader(int fd, int timeout)
                 break;
             prev_c = c;
         }
-        gettimeofday(&now, NULL);
     }
     while((now.tv_sec - start.tv_sec) < timeout);
     if (now.tv_sec - start.tv_sec >= timeout)
