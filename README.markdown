@@ -73,7 +73,8 @@ On reset, the bootloader prints "\r\nCCTL\r\n" followed by "B" up to 8 times wit
 If the bootloader receives any character before printing "B" 8 times, it will enter upgrade mode.
 
 If no character is received, the bootloader will attempt to launch user code from 0x400.
-The bootloader enables the watchdog with a 1s timeout before jumping to user code, so launching a broken app should cause a reset.
+
+The bootloader enables the watchdog with a 1s timeout while running. It does not engage the hardware watchdog when jumping to user code (as the watchdog cannot be disabled making it incompatible with applications which remain in deep sleep for long periods).
 
 Once in upgrade mode, the bootloader expects to receive at least one character per second, else it will reset using the hardware watchdog.
 
@@ -129,5 +130,28 @@ For interrupts which are used by both CCTL and application code, CCTL looks at t
 
 Application code should not modify PSW.F1.
 
+How do I get CCTL into my flash?
+--------------------------------
 
+The CC111x is programmed with a SPI like protocol using a hardware programmer. 
+The protocol is given in detail in http://focus.ti.com/lit/ug/swra124/swra124.pdf
+
+(CCTL is placed in the flash using this protocol, it is different to the serial protocol).
+
+==Official hardware programmer==
+
+* TI's CC-Debugger http://www.ti.com/tool/cc-debugger
+** "SmartRF Flash" software is Windows only
+
+==Third-party hardware programmers==
+
+* Travis Goodspeed's GoodFET http://goodfet.sourceforge.net/
+** Software requires python
+** Some assembly required
+
+==Open source implementations of protcol==
+
+* GoodFET (python) http://goodfet.sourceforge.net/clients/goodfet.cc/
+* Teensy (C) https://github.com/jkerdels/open_imme/tree/master/tools/teensy-prog
+* Linux GPIO sysfs (C) https://github.com/ffainelli/cc2530prog
 
