@@ -140,18 +140,18 @@ The protocol is given in detail in http://focus.ti.com/lit/ug/swra124/swra124.pd
 
 Official hardware programmer
 
-    * TI's CC-Debugger http://www.ti.com/tool/cc-debugger
-    ** "SmartRF Flash" software is Windows only
+ * TI's CC-Debugger http://www.ti.com/tool/cc-debugger
+ ** "SmartRF Flash" software is Windows only
 
 Third-party hardware programmers
 
-    * Travis Goodspeed's GoodFET http://goodfet.sourceforge.net/
-    ** Software requires python
-    ** Some assembly required
+ * Travis Goodspeed's GoodFET http://goodfet.sourceforge.net/
+ ** Software requires python
+ ** Some assembly required
 
 Open source implementations of protcol
 
-    * GoodFET (python) http://goodfet.sourceforge.net/clients/goodfet.cc/
-    * Teensy (C) https://github.com/jkerdels/open_imme/tree/master/tools/teensy-prog
-    * Linux GPIO sysfs (C) https://github.com/ffainelli/cc2530prog
+ * GoodFET (python) http://goodfet.sourceforge.net/clients/goodfet.cc/
+ * Teensy (C) https://github.com/jkerdels/open_imme/tree/master/tools/teensy-prog
+ * Linux GPIO sysfs (C) https://github.com/ffainelli/cc2530prog
 
