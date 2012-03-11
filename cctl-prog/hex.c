@@ -8,7 +8,7 @@
 #include <stdlib.h>
 
 #ifdef __CYGWIN__
-#define WIN32 1
+#undef WIN32
 #endif
 
 #ifndef WIN32

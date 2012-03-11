@@ -9,11 +9,11 @@
 #include <getopt.h>
 #include <sys/time.h>
 
-#ifdef __CYGWIN__
-#define WIN32 1
-#endif
-
 #define SERIAL_TIMEOUT 2
+
+#ifdef __CYGWIN__
+#undef WIN32
+#endif
 
 #ifndef WIN32
 #include <termios.h>
