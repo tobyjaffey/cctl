@@ -152,3 +152,12 @@ Open source implementations of protcol
 * Teensy (C) https://github.com/jkerdels/open_imme/tree/master/tools/teensy-prog
 * Linux GPIO sysfs (C) https://github.com/ffainelli/cc2530prog
 
+Building for Windows
+--------------------
+
+`cctl-prog` is currently built for Windows using the mingw32 cross compiler from Linux.
+
+    make -f Makefile.mingw32
+
+Compiling cctl-prog with cygwin's GCC may not work.
+

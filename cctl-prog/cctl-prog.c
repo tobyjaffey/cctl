@@ -9,6 +9,10 @@
 #include <getopt.h>
 #include <sys/time.h>
 
+#ifdef __CYGWIN__
+#define WIN32 1
+#endif
+
 #define SERIAL_TIMEOUT 2
 
 #ifndef WIN32
@@ -18,8 +22,6 @@
 #include <windows.h>
 #include <wincon.h>
 #include <time.h>
-#define O_NOCTTY 0
-#define O_NDELAY 0
 #define B115200 115200
 #endif
 

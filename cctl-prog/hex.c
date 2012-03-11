@@ -7,6 +7,10 @@
 #include <string.h>
 #include <stdlib.h>
 
+#ifdef __CYGWIN__
+#define WIN32 1
+#endif
+
 #ifndef WIN32
 #include <arpa/inet.h>
 #else
