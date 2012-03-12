@@ -40,6 +40,7 @@ For usage instructions, run cctl-prog with no arguments:
     --console        -c          Connect console to serial port on device
     --flash=file.hex -f file.hex Reflash device with intel hex file
     --timeout=n      -t n        Search for bootload string for n seconds
+    --passthrough    -p          Program remote device over passthrough
 
 If both `--console` and `--flash` are specified, then the device will be reflashed first, then the console will connect.
 
