@@ -34,6 +34,7 @@ static struct option long_options[] =
     {"flash",     required_argument, 0, 'f'},
     {"device",     required_argument, 0, 'd'},
     {"timeout",     required_argument, 0, 't'},
+    {"passthrough",    no_argument, 0, 'p'},
     {0, 0, 0, 0}
 };
 
@@ -49,6 +50,7 @@ void usage(void)
     fprintf(stderr, "  --console        -c          Connect console to serial port on device\n");
     fprintf(stderr, "  --flash=file.hex -f file.hex Reflash device with intel hex file\n");
     fprintf(stderr, "  --timeout=n      -t n        Search for bootload string for n seconds\n");
+    fprintf(stderr, "  --passthrough    -p          Program remote device over passthrough\n");
 }
 
 static bool opt_console = false;
@@ -57,6 +59,7 @@ static int opt_timeout = 10;
 static bool opt_device = false;
 static char *flash_filename = NULL;
 static char *device_name = NULL;
+static bool opt_passthrough = 0;
 
 #ifndef WIN32
 static struct termios orig_termios;
@@ -69,13 +72,16 @@ int parse_options(int argc, char **argv)
 
     while(1)
     {
-        c = getopt_long (argc, argv, "hcf:d:t:", long_options, &option_index);
+        c = getopt_long (argc, argv, "hcf:d:t:p", long_options, &option_index);
         if (c == -1)
             break;
         switch(c)
         {
             case 'h':
                 return 1;
+            break;
+            case 'p':
+                opt_passthrough = 1;
             break;
             case 't':
                 opt_timeout = atoi(optarg);
@@ -352,10 +358,14 @@ int read_page(int fd, uint8_t page, uint8_t *data)
     return 0;
 }
 
+static int already_erased = 0;  // passthrough programmer only supports mass erase
 int erase_page(int fd, uint8_t page)
 {
     char cmd = 'e';
     char rsp;
+
+    if (already_erased && opt_passthrough)
+        return 0;
 
     if (serialWrite(fd, &cmd, 1) <= 0)
         return 1;
@@ -368,6 +378,8 @@ int erase_page(int fd, uint8_t page)
         fprintf(stderr, "erase_page rsp=%02X\n", rsp);
         return 1;
     }
+
+    already_erased = 1;
 
     return 0;
 }
@@ -457,7 +469,8 @@ int wait_for_bootloader(int fd, int timeout)
 
     gettimeofday(&start, NULL);
 
-    serialWrite(fd, "+++", 3);
+    if (!opt_passthrough)
+        serialWrite(fd, "+++", 3);
 
     printf("Waiting %ds for bootloader, reset board now\n", timeout);
 
@@ -479,8 +492,16 @@ int wait_for_bootloader(int fd, int timeout)
         else
         if (rc == 1)
         {
-            if (c == 'B' && prev_c == 'B')
-                break;
+            if (opt_passthrough)
+            {
+                if (c == 'P' && prev_c == 'P')
+                    break;
+            }
+            else
+            {
+                if (c == 'B' && prev_c == 'B')
+                    break;
+            }
             prev_c = c;
         }
     }

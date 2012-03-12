@@ -4,6 +4,8 @@ CC Tiny Loader
 CCTL is a serial bootloader for the Chipcon CC1110/CC1111 using only one 1KB page of flash.
 It allows update of the the microcontroller firmware over its serial port.
 
+Included is CCHL, ChipCon Hardware Loader, an application which runs on the CC111x and can program a slave device over the ChipCon debug interface (http://focus.ti.com/lit/ug/swra124/swra124.pdf)
+
 The bootloader consists of two components, a piece of firmware that is flashed
 onto the device and a utility for downloading code and manipulating the
 flash memory. The client program, `cctl-prog` runs on Linux, OSX/Darwin and Windows.
@@ -138,6 +140,13 @@ The protocol is given in detail in http://focus.ti.com/lit/ug/swra124/swra124.pd
 
 (CCTL is placed in the flash using this protocol, it is different to the serial protocol).
 
+If you have access to one of the devices below, you can bootstrap out of it, by programming CCHL into a CC1110. CCHL allows the CC1110 to program virgin chips over the debug interface.
+
+To reflash a slave device, connect P1_6 to DD, P1_5 to DC and P1_4 to RESET, load `cchl.hex` onto a CC1110 running CCTL and run `cctl-prog` using the `--passthrough` flag. Eg. to program the `cctl` bootloader into a device:
+
+    `./cctl-prog -p -d /dev/ttyUSB0 -f cctl.hex`
+
+
 Official hardware programmer
 
 * TI's CC-Debugger http://www.ti.com/tool/cc-debugger (Windows only)
@@ -151,6 +160,7 @@ Open source implementations of protcol
 * GoodFET (python) http://goodfet.sourceforge.net/clients/goodfet.cc/
 * Teensy (C) https://github.com/jkerdels/open_imme/tree/master/tools/teensy-prog
 * Linux GPIO sysfs (C) https://github.com/ffainelli/cc2530prog
+
 
 Building for Windows
 --------------------
