@@ -4,7 +4,9 @@ CC Tiny Loader
 CCTL is a serial bootloader for the Chipcon CC1110/CC1111 using only one 1KB page of flash.
 It allows update of the the microcontroller firmware over its serial port.
 
-Included is CCHL, ChipCon Hardware Loader, an application which runs on the CC111x and can program a slave device over the ChipCon debug interface (http://focus.ti.com/lit/ug/swra124/swra124.pdf)
+Included is CCPIL, a ChipCon Hardware Loader which runs on the Raspberry Pi, which can be used to program the initial bootloader.
+
+Included is also CCHL, a ChipCon Hardware Loader which runs on the CC111x and can program a slave device over the ChipCon debug interface (http://focus.ti.com/lit/ug/swra124/swra124.pdf)
 
 The bootloader consists of two components, a piece of firmware that is flashed
 onto the device and a utility for downloading code and manipulating the
@@ -13,7 +15,7 @@ flash memory. The client program, `cctl-prog` runs on Linux, OSX/Darwin and Wind
 Authors
 -------
 
-Joby Taffey (c) 2012 <jrt-cctl@hodgepig.org>
+Toby Jaffey (c) 2012 <toby-cctl@hodgepig.org>
 
 Portions originally from CC Bootloader, Fergus Noble (c) 2011
 
