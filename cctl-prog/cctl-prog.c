@@ -35,6 +35,7 @@ static struct option long_options[] =
     {"device",     required_argument, 0, 'd'},
     {"timeout",     required_argument, 0, 't'},
     {"passthrough",    no_argument, 0, 'p'},
+    {"wireless",    no_argument, 0, 'w'},
     {0, 0, 0, 0}
 };
 
@@ -51,6 +52,7 @@ void usage(void)
     fprintf(stderr, "  --flash=file.hex -f file.hex Reflash device with intel hex file\n");
     fprintf(stderr, "  --timeout=n      -t n        Search for bootload string for n seconds\n");
     fprintf(stderr, "  --passthrough    -p          Program remote device over passthrough\n");
+    fprintf(stderr, "  --wireless       -w          Program remote device over wireless ccrl\n");
 }
 
 static bool opt_console = false;
@@ -60,6 +62,7 @@ static bool opt_device = false;
 static char *flash_filename = NULL;
 static char *device_name = NULL;
 static bool opt_passthrough = 0;
+static bool opt_wireless = 0;
 
 #ifndef WIN32
 static struct termios orig_termios;
@@ -72,13 +75,16 @@ int parse_options(int argc, char **argv)
 
     while(1)
     {
-        c = getopt_long (argc, argv, "hcf:d:t:p", long_options, &option_index);
+        c = getopt_long (argc, argv, "hcf:d:t:p:w", long_options, &option_index);
         if (c == -1)
             break;
         switch(c)
         {
             case 'h':
                 return 1;
+            break;
+            case 'w':
+                opt_wireless = 1;
             break;
             case 'p':
                 opt_passthrough = 1;
@@ -469,8 +475,8 @@ int wait_for_bootloader(int fd, int timeout)
 
     gettimeofday(&start, NULL);
 
-    if (!opt_passthrough)
-        serialWrite(fd, "+++", 3);
+    if (!opt_passthrough && !opt_wireless)
+        serialWrite(fd, "+++", 5);
 
     printf("Waiting %ds for bootloader, reset board now\n", timeout);
 
@@ -497,6 +503,11 @@ int wait_for_bootloader(int fd, int timeout)
                 if (c == 'P' && prev_c == 'P')
                     break;
             }
+	    else if (opt_wireless)
+	    {
+		if (c == 'W' && prev_c == 'W') 
+		    break;
+	    }
             else
             {
                 if (c == 'B' && prev_c == 'B')
