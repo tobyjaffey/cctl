@@ -9,8 +9,6 @@
 #include <getopt.h>
 #include <sys/time.h>
 
-#define SERIAL_TIMEOUT 2
-
 #ifdef __CYGWIN__
 #undef WIN32
 #endif
@@ -63,6 +61,7 @@ static char *flash_filename = NULL;
 static char *device_name = NULL;
 static bool opt_passthrough = 0;
 static bool opt_wireless = 0;
+static int serial_timeout = 2;
 
 #ifndef WIN32
 static struct termios orig_termios;
@@ -85,6 +84,7 @@ int parse_options(int argc, char **argv)
             break;
             case 'w':
                 opt_wireless = 1;
+                serial_timeout = 4;
             break;
             case 'p':
                 opt_passthrough = 1;
@@ -266,7 +266,7 @@ int serialRead(int fd, void* buf, int len)
             return rc;
         gettimeofday(&now, NULL);
     }
-    while((now.tv_sec - start.tv_sec) < SERIAL_TIMEOUT);
+    while((now.tv_sec - start.tv_sec) < serial_timeout);
 
     return 1;
 }
@@ -302,7 +302,7 @@ int serialWrite(int fd, void* buf, int len)
             return rc;
         gettimeofday(&now, NULL);
     }
-    while((now.tv_sec - start.tv_sec) < SERIAL_TIMEOUT);
+    while((now.tv_sec - start.tv_sec) < serial_timeout);
 
     return 1;
 }
