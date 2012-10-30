@@ -24,8 +24,11 @@ The code has been tested with SDCC version 3.2.0
 Radio Protocol
 --------------
 On reset the bootloader will send 18 packets containing this:
+
 <- `0x02 0xFD 0x10`
+
 waiting for a reponse like:
+
 -> `0x02 0xFE 0x10`
 
 If response is received it will enter upgrade mode.
@@ -43,12 +46,15 @@ In upgrade mode, the following commands are available:
 Erase a 1KB page of flash. 
 
 -> `0x04 0xFE 0x01`, `uint8_t page` (0-31), `0x00`
+
 <- `0x04 0xFD 0x01`, `uint8_t page` (0-31), `0x00`
+
 ### Program page
 
 Program a 1KB page of flash from RAM buffer.
 
 -> `0x04 0xFE 0x02`, `uint8_t page` (0-31), `0x00`
+
 <- `0x04 0xFD 0x02`, `uint8_t page` (0-31), `0x00`
 
 ### Read segment
@@ -56,15 +62,19 @@ Program a 1KB page of flash from RAM buffer.
 Read 64 byte segment from flash.
 
 -> `0x04 0xFE 0x03`, `uint8_t page` (0-31), `uint8_t segment` (0-15)
+
 <- `0x44 0xFD 0x03`, `uint8_t page` (0-31), `uint8_t segment` (0-15), `uint8_t data[64]`
+
 
 ### Load page
 
 Load 64 byte segment to RAM buffer.
 
 -> `0x44 0xFE 0x04`, `uint8_t page` (ignored), `uint8_t segment` (0-15), `uint8_t data[64]`
+
 <- `0x04 0xFD 0x04`, `uint8_t page` (ignored), `uint8_t segment` (0-15) 
 
 ### Jump to user code
+
 -> 0x02 0xFE 0x05
 
