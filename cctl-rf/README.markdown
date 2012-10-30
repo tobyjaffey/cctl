@@ -1,13 +1,13 @@
-ChipCon Tiny Loader Radio version
+ChipCon Tiny Loader Radio Version
 =================================
-A bootloader that can replace the original cctl, in places where you don't wan to load software via serial cable. This is achieved by using the Wireless radio interface of the CC1110.
+A bootloader that can replace the original cctl in places where you don't want to load software via serial cable. This is achieved by using the wireless radio interface of the CC1110.
 
-The readme only has limited information, experience in using the serial version of the cctl is recommended, see the readme of cctl.
+The readme has only limited information, experience in using the serial version of the cctl is recommended, see the readme of cctl.
 
 Usage
 -----
 
-You need 2 cc1110 boards, a device that can run the cctl-prog and a way to to load the bootloaders see readme of cctl.
+You need 2 cc1110 boards, a device that can run the cctl-prog, and a way to to load the bootloaders, see readme of cctl.
 
 First board should be loaded with a bootloader and the sensemote app ChipCon Radio Loader (ccrl).
 
@@ -15,15 +15,15 @@ Second board should have the cctl-rf bootloader.
 
 Connect the first board via serial to the device running the cctl-prog.
 
-Use the cctl-prog with -w option.
+Use the cctl-prog with the -w option.
 
 Building
 --------
-The code has been tested with SDCC version 3.2.0
+The code has been tested with SDCC, version 3.2.0
 
 Radio Protocol
 --------------
-On reset the bootloader will send 18 packets containing this:
+On reset the bootloader will send 18 packets containing the following:
 
 <- `0x02 0xFD 0x10`
 
@@ -31,15 +31,15 @@ waiting for a reponse like:
 
 -> `0x02 0xFE 0x10`
 
-If response is received it will enter upgrade mode.
+If a response is received, the bootloader will enter upgrade mode.
 
 If no packet is received, the bootloader will attempt to launch user code from 0x400.
 
 The bootloader enables the watchdog with a 1s timeout while running. It does not engage the hardware watchdog when jumping to user code (as the watchdog cannot be disabled making it incompatible with applications which remain in deep sleep for long periods).
 
-Once in upgrade mode, the bootloader expects to receive at least one packet per second, else it will reset using the hardware watchdog.
+Once in upgrade mode, the bootloader expects to receive at least one packet per second, otherwise it will reset using the hardware watchdog.
 
-In upgrade mode, the following commands are available:
+In upgrade mode the following commands are available:
 
 ### Erase page
 
